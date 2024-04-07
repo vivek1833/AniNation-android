@@ -8,6 +8,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
+import Header from "../constants/header";
 import Card from "../constants/card";
 import { homePage } from "../utils/api";
 
@@ -32,6 +33,7 @@ const Home = () => {
   return (
     <SafeAreaView>
       <ScrollView>
+        <Header page="home" />
         <View style={styles.container}>
           {trending.length === 0 ? (
             <Text style={styles.text}>Loading...</Text>
@@ -108,8 +110,6 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     padding: 10,
     position: "relative",
-    top: 35,
-    marginBottom: 130,
   },
   text: {
     color: "white",
