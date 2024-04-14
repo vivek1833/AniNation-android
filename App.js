@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./components/pages/home";
 import Anime from "./components/pages/anime";
 import Search from "./components/pages/search";
+import Player from "./components/pages/player";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Anime" component={Anime} />
           <Stack.Screen name="Search" component={Search} />
+          <Stack.Screen name="Player" component={Player} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="light" />

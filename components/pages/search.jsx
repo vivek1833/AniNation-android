@@ -11,6 +11,7 @@ import {
 
 import Card from "../constants/card";
 import Header from "../constants/header";
+import Loading from "../constants/loading";
 import { getSearch } from "../utils/api";
 
 const Search = () => {
@@ -46,7 +47,7 @@ const Search = () => {
         {loading === true || searchData.length === 0 ? (
           <>
             {loading ? (
-              <Text style={styles.text}>Loading...</Text>
+              <Loading />
             ) : (
               <Text style={styles.text}>Search for Animes</Text>
             )}

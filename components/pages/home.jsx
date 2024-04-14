@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Header from "../constants/header";
 import Card from "../constants/card";
+import Loading from "../constants/loading";
 import { homePage } from "../utils/api";
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
   const [latest, setLatest] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [genre, setGenre] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const setHomeData = async () => {
     const homeData = await homePage();
@@ -24,48 +26,76 @@ const Home = () => {
     setLatest(homeData.latestEpisodeAnimes);
     setUpcoming(homeData.topUpcomingAnimes);
     setGenre(homeData.genres);
+    setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     setHomeData();
   }, []);
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <Header page="home" />
-        <View style={styles.container}>
-          {trending.length === 0 ? (
-            <Text style={styles.text}>Loading...</Text>
-          ) : (
-            <>
-              <Text style={styles.text}>Top Airing Animes</Text>
-              <FlatList
-                horizontal
-                data={trending}
-                renderItem={({ item }) => <Card data={item} />}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.scrollContainer}
-              />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Header page="home" />
+          <ScrollView>
+            <View style={styles.container}>
+              {trending.length === 0 ? (
+                <Text style={styles.text}>Loading...</Text>
+              ) : (
+                <>
+                  <Text style={styles.text}>Top Airing Animes</Text>
+                  <FlatList
+                    horizontal
+                    data={trending}
+                    renderItem={({ item }) => <Card data={item} />}
+                    keyExtractor={(item) => item.id.toString()}
+                    style={styles.scrollContainer}
+                  />
 
-              <Text style={styles.text}>Latest Episodes</Text>
-              <FlatList
-                horizontal
-                data={latest}
-                renderItem={({ item }) => <Card data={item} />}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.scrollContainer}
-              />
+                  <Text style={styles.text}>Latest Episodes</Text>
+                  <FlatList
+                    horizontal
+                    data={latest}
+                    renderItem={({ item }) => <Card data={item} />}
+                    keyExtractor={(item) => item.id.toString()}
+                    style={styles.scrollContainer}
+                  />
 
-              <Text style={styles.text}>Top Upcoming Animes</Text>
-              <FlatList
-                horizontal
-                data={upcoming}
-                renderItem={({ item }) => <Card data={item} />}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.scrollContainer}
-              />
+                  <Text style={styles.text}>Top Upcoming Animes</Text>
+                  <FlatList
+                    horizontal
+                    data={upcoming}
+                    renderItem={({ item }) => <Card data={item} />}
+                    keyExtractor={(item) => item.id.toString()}
+                    style={styles.scrollContainer}
+                  />
 
+                  <View
+                    style={{
+                      borderBottomColor: "white",
+                      borderBottomWidth: 1,
+                      marginTop: 10,
+                    }}
+                  />
+                  <Text style={styles.text}>Genres</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      marginLeft: 5,
+                    }}>
+                    {genre.map((name, index) => (
+                      <Text key={index} style={styles.genretext}>
+                        {name}
+                      </Text>
+                    ))}
+                  </View>
+                </>
+              )}
               <View
                 style={{
                   borderBottomColor: "white",
@@ -73,31 +103,10 @@ const Home = () => {
                   marginTop: 10,
                 }}
               />
-              <Text style={styles.text}>Genres</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  marginLeft: 5,
-                }}>
-                {genre.map((name, index) => (
-                  <Text key={index} style={styles.genretext}>
-                    {name}
-                  </Text>
-                ))}
-              </View>
-            </>
-          )}
-          <View
-            style={{
-              borderBottomColor: "white",
-              borderBottomWidth: 1,
-              marginTop: 10,
-            }}
-          />
-        </View>
-      </ScrollView>
-
+            </View>
+          </ScrollView>
+        </>
+      )}
       <StatusBar style="light" />
     </SafeAreaView>
   );
